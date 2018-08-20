@@ -1,3 +1,11 @@
+<?php
+	require_once 'scripts/utils/database.php';
+	require_once 'scripts/connectors/AlbumConnector.php';
+
+	$AlbumConnector = new AlbumConnector($conn);
+
+	$albums = $AlbumConnector->selectAll();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -71,27 +79,30 @@
 	
 	<div class="container container-small">
 		<div class="row gallery center-block" style="margin: 2vh auto;">
-				<div class="thumbnail" style="background: url('img/IMG_1565.JPG.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-				<div class="thumbnail" style="background: url('img/D60_6855.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-				<div class="thumbnail" style="background: url('img/D60_6185.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-		</div>
-		<div class="row gallery center-block" style="margin: -1vh auto;">
-				<div class="thumbnail" style="background: url('img/D60_6185.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-				<div class="thumbnail" style="background: url('img/D60_6855.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-				<div class="thumbnail" style="background: url('img/IMG_1565.JPG.jpg') 50% 50% no-repeat; /* 50% 50% centers image in div */">
-					<a href="#"><span class="album-title">Cool Dude</span><br><span class="description">Dude + Dude</span></a>
-				</div>
-		</div>
+		<?php
+			for($i = 0; $i < count($albums); $i++) {
+				list($width, $height, $type, $attr) = getimagesize($albums[$i][AlbumConnector::$COLUMN_COVER]);
+
+				if($width > $height) {
+					echo "<div class=\"thumbnail\" style=\"background: url('" . $albums[$i][AlbumConnector::$COLUMN_COVER] . "') 50% 50%/auto 100% no-repeat; /* 50% 50% centers image in div */\">";
+				}
+				else {
+					echo "<div class=\"thumbnail\" style=\"background: url('" . $albums[$i][AlbumConnector::$COLUMN_COVER] . "') 50% 50%/100% auto no-repeat; /* 50% 50% centers image in div */\">";
+				}
+				echo "<a href=\"#\"><span class=\"album-title\">" . $albums[$i][AlbumConnector::$COLUMN_NAME] . "</span><br><span class=\"description\">" . $albums[$i][AlbumConnector::$COLUMN_DESCRIPTION] . "</span></a>";
+				echo "</div>";
+
+				if(($i + 1) % 3 == 0) {
+					echo "</div>";
+					echo "<div class=\"row gallery center-block\" style=\"margin: -1vh auto;\">";
+				}
+			}
+
+			if(($i + 1) % 3 != 0) {
+				echo "</div>";
+				echo "<div class=\"row gallery center-block\" style=\"margin: -1vh auto;\">";
+			}
+		?>
 	</div>
 	
 	<div class="container container-small" style="margin-top: 15vh; margin-bottom: 5vh">
