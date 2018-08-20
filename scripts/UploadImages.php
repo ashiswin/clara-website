@@ -11,13 +11,20 @@
 	for ($i = 0; $i < $count; $i++) {
 		$filename = uniqid('banner-', true);
 		$targetFile = $targetDir . $filename;
-		move_uploaded_file($_FILES["bannerImages"]["tmp_name"][$i], $targetFile);
+		if(!move_uploaded_file($_FILES["bannerImages"]["tmp_name"][$i], $targetFile)) {
+			$response["success"] = false;
+			$response["message"] = "Failed to upload!";
+	
+			echo(json_encode($response));
+			return;
+		}
 		$location = "img/uploads/" . $filename;
 		
 		$BannerConnector->create($location);
 	}
 	
 	$response["success"] = true;
+	$response["file"] = $targetFile;
 	
 	echo(json_encode($response));
 ?>

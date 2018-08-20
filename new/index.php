@@ -1,10 +1,15 @@
 <?php
 	require_once 'scripts/utils/database.php';
 	require_once 'scripts/connectors/AlbumConnector.php';
+	require_once 'scripts/connectors/BannerConnector.php';
 
 	$AlbumConnector = new AlbumConnector($conn);
 
 	$albums = $AlbumConnector->selectAll();
+
+	$events = $AlbumConnector->selectByCategory(8);
+	$weddings = $AlbumConnector->selectByCategory(7);
+	$portraits = $AlbumConnector->selectByCategory(9);
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +25,7 @@
 	<div class="container container-small">
 		<div class="row">
 			<span class="title">CLARA HO PHOTOGRAPHY</span>
-			<span class="subtitle">pixels louder than words</span>
+			<span class="subtitle"><?php echo file('config/bannerSubtitle.txt')[0]; ?></span>
 		</div>
 		<nav class="navbar navbar-expand-sm navbar-light bg-clear flex-nowrap" style="margin-top: 2vh">
 			<button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbar5">
@@ -31,25 +36,52 @@
 					<li class="nav-item">
 						<a class="nav-link text-white" href="#">HOME</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="#">COUPLES</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	COUPLES
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($weddings as $w) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $w[AlbumConnector::$COLUMN_ID]. "\">" . $w[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="#">EVENTS</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	EVENTS
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($events as $e) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $e[AlbumConnector::$COLUMN_ID]. "\">" . $e[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link text-white" href="#">PORTRAITS</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	PORTRAITS
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($portraits as $p) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $p[AlbumConnector::$COLUMN_ID]. "\">" . $p[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link text-white" href="#">ABOUT US</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-white" href="#">INSTAGRAM</a>
+						<a class="nav-link text-white" href="https://www.instagram.com/hpyclara/">INSTAGRAM</a>
 					</li>
 				</ul>
 			</div>
 		</nav>
-		<img id="slideshow" src='img/IMG_1565.JPG.jpg' width="100%">
+		<img id="slideshow" width="100%">
 	</div>
 	
 	<div class="container container-small" id="underbanner">
@@ -69,7 +101,7 @@
 				<hr>
 				<p style="margin-top: 10vh;">
 					<a href="facebook.com" class="social-link"><i class="fab fa-facebook-f"></i></a>
-					<a href="instagram.com" class="social-link"><i class="fab fa-instagram"></i></a>
+					<a href="https://www.instagram.com/hpyclara/" class="social-link"><i class="fab fa-instagram"></i></a>
 					<a href="pintrest.com" class="social-link"><i class="fab fa-pinterest-p"></i></a>
 				</p>
 			</div>
@@ -89,7 +121,7 @@
 				else {
 					echo "<div class=\"thumbnail\" style=\"background: url('" . $albums[$i][AlbumConnector::$COLUMN_COVER] . "') 50% 50%/100% auto no-repeat; /* 50% 50% centers image in div */\">";
 				}
-				echo "<a href=\"#\"><span class=\"album-title\">" . $albums[$i][AlbumConnector::$COLUMN_NAME] . "</span><br><span class=\"description\">" . $albums[$i][AlbumConnector::$COLUMN_DESCRIPTION] . "</span></a>";
+				echo "<a href=\"album.php?id=" . $albums[$i][AlbumConnector::$COLUMN_ID]. "\"><span class=\"album-title\">" . $albums[$i][AlbumConnector::$COLUMN_NAME] . "</span><br><span class=\"description\">" . $albums[$i][AlbumConnector::$COLUMN_DESCRIPTION] . "</span></a>";
 				echo "</div>";
 
 				if(($i + 1) % 3 == 0) {
@@ -115,8 +147,22 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="text/javascript">
-		var slides = ['img/IMG_1565.JPG.jpg', 'img/D60_6855.jpg', 'img/D60_6185.jpg'];
+		<?php
+			$BannerConnector = new BannerConnector($conn);
+			$images = $BannerConnector->selectAll();
+
+			$slides = "";
+			for($i = 0; $i < count($images); $i++) {
+				$slides .= "'" . $images[$i][BannerConnector::$COLUMN_IMAGE] . "'";
+				if($i != count($images) - 1) {
+					$slides .= ",";
+				}
+			}
+			echo "var slides = [" . $slides . "];";
+		?>
 		var currentSlide = 0;
+		$("#slideshow").attr('src', slides[currentSlide]);
+
 		var tid = setInterval(slideshow, 5000);
 		function slideshow() {
 			$("#slideshow").fadeOut(1000, function() {

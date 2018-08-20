@@ -1,36 +1,4 @@
 <div class="pane" id="portfolioPane" style="font-family: 'Raleway', Arial, sans-serif">
-	<div class="row" style="margin-top: 1vh">
-		<div class="col-md-8">
-			<h1>Categories</h1>
-		</div>
-		<div class="col-md-4">
-			<button class="btn btn-primary float-right" id="btnCategoryAdd" style="margin-right: 2vh"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>
-		</div>
-	</div>
-	<div class="container" style="margin-top: 2vh">
-		<table class="table">
-			<colgroup>
-				<col span="1" style="width: 5%;">
-				<col span="1" style="width: 20%;">
-				<col span="1" style="width: 15%;">
-				<col span="1" style="width: 50%;">
-				<col span="1" style="width: 5%;">
-				<col span="1" style="width: 5%;">
-			</colgroup>
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Cover Image</th>
-					<th>Category</th>
-					<th>Description</th>
-					<th><i class="fa fa-pencil" aria-hidden="true"></i></th>
-					<th><i class="fa fa-trash" aria-hidden="true"></i></th>
-				</tr>
-			</thead>
-			<tbody id="tblCategories">
-			</tbody>
-		</table>
-	</div>
 	<div class="row" style="margin-top: 2vh">
 		<div class="col-md-8">
 			<h1>Albums</h1>

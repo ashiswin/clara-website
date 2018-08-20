@@ -48,6 +48,13 @@ h3 {
     transition: color 0.5s;
 }
 
+.dropdown-item {
+    font-family: 'Quicksand Regular', Arial, sans-serif !important;
+    font-size: 12px;
+    font-weight: 400;
+    color: #000 !important;
+}
+
 .nav-link:hover {
 	color: #AAAAAA !important;
 }

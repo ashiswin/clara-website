@@ -21,38 +21,6 @@
 	</div>
 	<div class="row" style="margin-top: 2vh">
 		<div class="col-md-8">
-			<h1>Summary Settings</h1>
-		</div>
-		<div class="col-md-4">
-			<button class="btn btn-primary float-right" id="btnSummaryAdd" style="margin-right: 2vh"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Add</button>
-		</div>
-	</div>
-	<div class="container" style="margin-top: 2vh">
-		<div id="summaryImages">
-			<table class="table">
-				<colgroup>
-					<col span="1" style="width: 5%;">
-					<col span="1" style="width: 25%;">
-					<col span="1" style="width: 60%;">
-					<col span="1" style="width: 5%;">
-					<col span="1" style="width: 5%;">
-				</colgroup>
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Image</th>
-						<th>Writeup</th>
-						<th><i class="fa fa-pencil" aria-hidden="true"></i></th>
-						<th><i class="fa fa-trash" aria-hidden="true"></i></th>
-					</tr>
-				</thead>
-				<tbody id="tblSummaries">
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div class="row" style="margin-top: 2vh">
-		<div class="col-md-8">
 			<h1>Featured Albums Settings</h1>
 		</div>
 	</div>
