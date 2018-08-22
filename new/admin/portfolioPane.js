@@ -1,3 +1,113 @@
+var categoriesSelect = "";
+
+function loadCategories() {
+	$.get("../scripts/GetCategories.php", function(data) {
+		var response = JSON.parse(data);
+		if(response.success) {
+			var html = "";
+			var validImageUpload = false;
+			var deleteId = -1;
+			
+			categories = response.categories;
+			
+			for(var i = 0; i < response.categories.length; i++) {
+				html += "<tr>\n";
+				html += "\t<td>" + (i + 1) + "</td>\n";
+				html += "\t<td><img class=\"cover-image\" style=\"object-fit: contain\" src=\"../" + response.categories[i].cover + "\" width=\"100%\"></td>\n";
+				html += "\t<td>" + response.categories[i].category + "</td>\n";
+				html += "\t<td>" + response.categories[i].description + "</td>\n";
+				html += "\t<td><a class=\"edit-category\" href=\"" + i + "\"><i class=\"fa fa-pencil\" aria-hidden=\"true\"></i></a></td>\n";
+				html += "\t<td><a class=\"delete-category\" href=\"" + response.categories[i].id + "\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></a></td>\n";
+				html += "</tr>\n";
+				
+				categoriesSelect += "<option value=\"" + response.categories[i].id + "\">" + response.categories[i].category + "</option>\n";
+			}
+			
+			$("#tblCategories").html(html);
+			$(".cover-image").css('height', $(".cover-image").width());
+			
+			$(".edit-category").off('click').click(function(e) {
+				e.preventDefault();
+				
+				$("#categoryEditId").val($(this).attr('href'));
+				$("#txtEditCategory").val(response.categories[$(this).attr('href')].category);
+				$("#txtEditDescription").val(response.categories[$(this).attr('href')].description);
+				$("#mdlEditCategory").modal();
+			});
+			$("#btnEditCategory").off('click').click(function(e) {
+				e.preventDefault();
+				
+				var category = $("#txtEditCategory").val();
+				var description = $("#txtEditDescription").val();
+				var editIndex = $("#categoryEditId").val();
+				$.post("../scripts/UpdateCategory.php", { id: response.categories[editIndex].id, category: category, description: description }, function(data) {
+					var response = JSON.parse(data);
+					if(response.success) {
+						$("#editCategoryForm").get(0).reset();
+						$("#mdlEditCategory").modal('hide');
+						loadCategories();
+					}
+				});
+			});
+			
+			$(".delete-category").off('click').click(function(e) {
+				e.preventDefault();
+				
+				deleteId = $(this).attr('href');
+				$("#categoryDeleteId").val(deleteId);
+				$("#mdlDeleteCategory").modal();
+			});
+			$("#btnDeleteCategory").off('click').click(function(e) {
+				e.preventDefault();
+				
+				$.post("../scripts/DeleteCategory.php", { id: $("#categoryDeleteId").val() }, function(data) {
+					var response = JSON.parse(data);
+					if(response.success) {
+						$("#mdlDeleteCategory").modal('hide');
+						loadCategories();
+					}
+				});
+			});
+			
+			$("#btnCategoryAdd").off('click').click(function(e) {
+				e.preventDefault();
+				
+				$("#mdlAddCategory").modal();
+			});
+			$("#btnSaveCategory").off('click').click(function(e) {
+				e.preventDefault();
+				
+				var category = $("#txtCategory").val();
+				var description = $("#txtDescription").val();
+				var form_data = new FormData();
+				
+				form_data.append("cover", document.getElementById('categoryCoverImageUpload').files[0]);
+				form_data.append("category", category);
+				form_data.append("description", description);
+				
+				// Perform POST request to send file to server
+				$.ajax({
+					url: '../scripts/AddCategory.php', // point to server-side PHP script 
+					dataType: 'text',  // what to expect back from the PHP script, if anything
+					cache: false,
+					contentType: false,
+					processData: false,
+					data: form_data,
+					type: 'post',
+					success: function(data){
+						response = JSON.parse(data);
+						if(response.success) {
+							$("#mdlAddCategory").modal('hide');
+							$("#addCategoryForm").get(0).reset();
+							loadCategories();
+						}
+					}
+				});
+			});
+		}
+	});
+}
+
 var lastScroll = 0;
 function text_truncate(str, length, ending) {
 	if (length == null) {
@@ -22,7 +132,7 @@ function loadAlbums() {
 			for(var i = 0; i < response.albums.length; i++) {
 				html += "<tr>\n";
 				html += "\t<td>" + (i + 1) + "</td>\n";
-				html += "\t<td><img src=\"../" + response.albums[i].cover + "\" width=\"100%\"></td>\n";
+				html += "\t<td><img src=\"" + response.albums[i].cover + "\" width=\"100%\"></td>\n";
 				html += "\t<td>" + response.albums[i].name + "</td>\n";
 				html += "\t<td>" + text_truncate(response.albums[i].description) + "</td>\n";
 				html += "\t<td>" + response.albums[i].categoryName + "</td>\n";
@@ -273,4 +383,6 @@ function loadAlbums() {
 		}
 	});
 }
+
+loadCategories();
 loadAlbums();
