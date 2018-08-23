@@ -1,171 +1,176 @@
 <?php
 	require_once 'scripts/utils/database.php';
+	require_once 'scripts/connectors/AlbumConnector.php';
 	require_once 'scripts/connectors/BannerConnector.php';
+
+	$AlbumConnector = new AlbumConnector($conn);
+
+	$albums = $AlbumConnector->selectAll();
+
+	$events = $AlbumConnector->selectByCategory(8);
+	$weddings = $AlbumConnector->selectByCategory(7);
+	$portraits = $AlbumConnector->selectByCategory(9);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Clara Ho Photography</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/common.css">
-	
-	<style>
-		.thumbnail {			
-			border-top: 4vh solid #fff;
-			border-bottom: 4vh solid #fff;
-			border-left: 2vh solid #fff;
-			border-right: 2vh solid #fff;
-		}
-	</style>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+	<link rel="stylesheet" href="fonts/fonts.css">
+	<link rel="stylesheet" href="index.css">
 </head>
 <body>
-	<?php require_once "nav.php"; ?>
-	<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" width="100%">
-		<div class="carousel-inner" role="listbox">
-			<?php
-				$BannerConnector = new BannerConnector($conn);
-				$images = $BannerConnector->selectAll();
-				
-				for($i = 0; $i < count($images); $i++) {
-					if($i == 0) {
-						echo "<div class=\"carousel-item fill-screen active\">";
-					}
-					else {
-						echo "<div class=\"carousel-item fill-screen\">";
-					}
-					echo "<img class=\"d-block img-fluid\" src=\"" . $images[$i][BannerConnector::$COLUMN_IMAGE] . "\">";
-					echo "</div>";
-				}
-			?>
+	<div class="container container-small">
+		<div class="row">
+			<span class="title">CLARA HO PHOTOGRAPHY</span>
+			<span class="subtitle"><?php echo file('config/bannerSubtitle.txt')[0]; ?></span>
 		</div>
+		<nav class="navbar navbar-expand-sm navbar-light bg-clear flex-nowrap" style="margin-top: 2vh">
+			<button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbar5">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-collapse collapse w-100 justify-content-center">
+				<ul class="navbar-nav mx-auto">
+					<li class="nav-item">
+						<a class="nav-link text-white" href="#">HOME</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	COUPLES
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($weddings as $w) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $w[AlbumConnector::$COLUMN_ID]. "\">" . $w[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	EVENTS
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($events as $e) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $e[AlbumConnector::$COLUMN_ID]. "\">" . $e[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				        	PORTRAITS
+				        </a>
+				        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				        	<?php
+				        		foreach($portraits as $p) {
+				        			echo "<a class=\"dropdown-item\" href=\"album.php?id=" . $p[AlbumConnector::$COLUMN_ID]. "\">" . $p[AlbumConnector::$COLUMN_NAME] . "</a>";
+				        		}
+				        	?>
+				        </div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="#">ABOUT US</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" href="https://www.instagram.com/hpyclara/">INSTAGRAM</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<img id="slideshow" width="100%">
 	</div>
-	<div style="text-align: center; vertical-align: middle; line-height: 5vh; width: 100%; height: 5vh; position: relative; top: -20vh; z-index: 99; font-size: 20px">
-		<p id="section05">
-			<a id="scrollDown" href="#">Scroll down for more<span></span></a>
-		</p>
-	</div>
-	<div style="text-align: center; position: relative; top: -75vh; z-index: 99; color: white; height: 0">
-		<h1 style="font-family: 'Stalemate', Arial, sans-serif; font-size: 11em; font-weight: bold">Clara Ho</h1>
-		<p style="font-family: 'Stalemate', Arial, sans-serif; font-size: 3em; position: absolute; top: 20vh; width: 100%">
-			<?php echo file('config/bannerSubtitle.txt')[0]; ?>
-		</p>
-	</div>
-	<div id="summaries" class="container-fluid" width="100%" style="opacity: 0; color: #666666">
-		<h1 style="font-family: 'Raleway', Arial, sans-serif; font-size: 4em; font-weight: bold;">Some Title</h1>
-		<div class="row" width="100%">
-			<div class="col-md-6" id="storiesOfLifeContainer">
-				<br>
-				<br>
-				<p style="font-size: 1.2em" id="summaryText">
+	
+	<div class="container container-small" id="underbanner">
+		<div class="row">
+			<div class="col-md-6" style="border-right: dotted; border-width: 0.5px; border-color: #CCCCCC">
+				<h3>HELLO THERE!</h3>
+				<hr>
+				<p>
+					We are a collective of passionate imagemakers who believe in honest images documented in the essence of natural light and two people being in love.
+				</p>
+				<p>
+					We are in this to tell your story.
 				</p>
 			</div>
-			<div class="col-md-6">
-				<img id="summaryImage" src="img/two.jpg" width="100%" style="object-fit: contain;">
+			<div class="col-md-6" style="height: 100%;">
+				<h3>GET CONNECTED</h3>
+				<hr>
+				<p style="margin-top: 10vh;">
+					<a href="facebook.com" class="social-link"><i class="fab fa-facebook-f"></i></a>
+					<a href="https://www.instagram.com/hpyclara/" class="social-link"><i class="fab fa-instagram"></i></a>
+					<a href="pintrest.com" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+				</p>
 			</div>
 		</div>
-		<div style="text-align: center; margin-top: 5vh; width: 100%; font-size: 1.5em">
-			 <a href="#" id="btnSummaryLeft"><span class="left"></span></a>&nbsp;<span id="summaryImageNumber"></span> / <span id="summaryImageMax"></span>&nbsp;<a href="#" id="btnSummaryRight"><span class="right"></span></a>
-		</div>
 	</div>
-	<div class="container">
-		<hr>
+	<h3>RECENT EVENTS</h3>
+	
+	<div class="container container-small">
+		<div class="row gallery center-block" style="margin: 2vh auto;">
+		<?php
+			for($i = 0; $i < count($albums); $i++) {
+				list($width, $height, $type, $attr) = getimagesize($albums[$i][AlbumConnector::$COLUMN_COVER]);
+
+				if($width > $height) {
+					echo "<div class=\"thumbnail\" style=\"background: url('" . $albums[$i][AlbumConnector::$COLUMN_COVER] . "') 50% 50%/auto 100% no-repeat; /* 50% 50% centers image in div */\">";
+				}
+				else {
+					echo "<div class=\"thumbnail\" style=\"background: url('" . $albums[$i][AlbumConnector::$COLUMN_COVER] . "') 50% 50%/100% auto no-repeat; /* 50% 50% centers image in div */\">";
+				}
+				echo "<a href=\"album.php?id=" . $albums[$i][AlbumConnector::$COLUMN_ID]. "\"><span class=\"album-title\">" . $albums[$i][AlbumConnector::$COLUMN_NAME] . "</span><br><span class=\"description\">" . $albums[$i][AlbumConnector::$COLUMN_DESCRIPTION] . "</span></a>";
+				echo "</div>";
+
+				if(($i + 1) % 3 == 0) {
+					echo "</div>";
+					echo "<div class=\"row gallery center-block\" style=\"margin: -1vh auto;\">";
+				}
+			}
+
+			if(($i + 1) % 3 != 0) {
+				echo "</div>";
+				echo "<div class=\"row gallery center-block\" style=\"margin: -1vh auto;\">";
+			}
+		?>
 	</div>
-	<div class="container-fluid" width="100%" style="color: #666666">
-		<h1 id="featuredAlbumsTitle" style="font-family: 'Raleway', Arial, sans-serif; font-size: 4em; font-weight: bold; margin-top: 5vh;">Featured Albums</h1>
-		<div class="row" id="featuredAlbums">
-			<a href="view.php?alb=1" class="thumbnail col-md-4" data-content="Wedding 1">
-				<img class="portrait" src="img/one.jpg">
-			</a>
-			<a href="#" class="thumbnail col-md-4" data-content="Event 2">
-				<img src="img/two.jpg">
-			</a>
-			<a href="#" class="thumbnail col-md-4" data-content="Portrait 3">
-				<img src="img/three.jpg">
-			</a>
-		</div>
+	
+	<div class="container container-small" style="margin-top: 15vh; margin-bottom: 5vh">
+		<footer>
+			Clara Ho Photography | Singapore Wedding Photographer | Best Singapore Wedding Photographer | Top Singapore Wedding Photographer
+		</footer>
 	</div>
-	<div style="text-align: center; vertical-align: middle; line-height: 5vh; width: 100%; height: 5vh; font-size: 8px; ">
-		&copy; 2017 Clara Ho Photography
-	</div>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script type="text/javascript">
-		var summaryImage = 0;
-		var summaryImageMax = 10;
-		
-		$(document).ready(function() {
-			$(".carousel-item").css('width', $(window).width());
-			$(".fill-screen").css('height', $(window).height());
-			$(".thumbnail").css('height', $(".thumbnail").width());
+		<?php
+			$BannerConnector = new BannerConnector($conn);
+			$images = $BannerConnector->selectAll();
 
-			$("#summaries").css('height', $(window).height());
+			$slides = "";
+			for($i = 0; $i < count($images); $i++) {
+				$slides .= "'" . $images[$i][BannerConnector::$COLUMN_IMAGE] . "'";
+				if($i != count($images) - 1) {
+					$slides .= ",";
+				}
+			}
+			echo "var slides = [" . $slides . "];";
+		?>
+		var currentSlide = 0;
+		$("#slideshow").attr('src', slides[currentSlide]);
 
-			$("#featuredAlbums > a").fadeOut();
-			$("#featuredAlbumsTitle").fadeOut();
-
-			$('#scrollDown').click(function(e) {
-				e.preventDefault();
-				$("#summaries").animate({ opacity: 1 }, { queue: false, duration: 'slow' });
-				$('html, body').animate({ scrollTop: $(window).height()}, $(window).height(), 'swing');
-				$(".fill-screen").css('height', $(window).height());
-			});
-		});
-		$(window).scroll(function() {
-			var scrollPos = $(document).scrollTop();
-			if(scrollPos > 0) {
-				$("#summaries").animate({ opacity: 1 }, { queue: false, duration: 'slow' });
-			}
-			if(scrollPos > $(window).height() + $("#featuredAlbumsTitle").height()) {
-				$("#featuredAlbumsTitle").fadeIn(500);
-				var d = 200;
-				$("#featuredAlbums > a").each(function() {
-					$(this).delay(d).fadeIn(500);
-					d += 500;
-				});
-			}
-		});
-		$.get("scripts/GetSummaries.php", function(data) {
-			var response = JSON.parse(data);
-			if(response.success) {
-				var summaries = response.summaries;
-				summaryImageMax = summaries.length;
-				
-				$("#summaryImageMax").html(summaryImageMax);
-				$("#summaryImageNumber").html(summaryImage + 1);
-				$("#summaryImage").attr('src', summaries[summaryImage].image);
-				$("#summaryText").html(summaries[summaryImage].summary);
-				$("#btnSummaryLeft").click(function(e) {
-					e.preventDefault();
-					summaryImage--;
-					if(summaryImage < 0) {
-						summaryImage = summaryImageMax - 1;
-					}
-					
-					$("#summaryImageNumber").html(summaryImage + 1);
-					$("#summaryImage, #summaryText").fadeOut(400, function() {
-						$("#summaryImage").attr('src', summaries[summaryImage].image);
-						$("#summaryText").html(summaries[summaryImage].summary);
-					})
-					.fadeIn(400);
-				});
-				$("#btnSummaryRight").click(function(e) {
-					e.preventDefault();
-					summaryImage++;
-					if(summaryImage >= summaryImageMax) {
-						summaryImage = 0;
-					}
-					
-					$("#summaryImageNumber").html(summaryImage + 1);
-					$("#summaryImage, #summaryText").fadeOut(400, function() {
-						$("#summaryImage").attr('src', summaries[summaryImage].image);
-						$("#summaryText").html(summaries[summaryImage].summary);
-					})
-					.fadeIn(400);
-				});
-			}
-		});
+		var tid = setInterval(slideshow, 5000);
+		function slideshow() {
+			$("#slideshow").fadeOut(1000, function() {
+				$("#slideshow").attr('src', slides[currentSlide]);
+			})
+			.fadeIn(2000);
+			currentSlide = (currentSlide + 1) % slides.length;
+		}
 	</script>
 </body>
 </html>

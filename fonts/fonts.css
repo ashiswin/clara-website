@@ -1,0 +1,44 @@
+@font-face {
+	font-family: "Quicksand";
+	src: url("Quicksand.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Quicksand Regular";
+	src: url("Quicksand.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Adobe Garamond Pro Italic";
+	src: url("agaramondpro-italic.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Adobe Garamond Pro";
+	src: url("agaramondpro-regular.otf") format("opentype");
+}
+
+@font-face {
+	font-family: "Gotham Medium";
+	src: url("GothamMedium.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Miso";
+	src: url("miso-light.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Porto";
+	src: url("porto-ico.woff") format("woff");
+}
+
+@font-face {
+	font-family: "Quicksand Bold";
+	src: url("Quicksand Bold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "Trajan Pro";
+	src: url("Trajan Pro Regular.ttf") format("truetype");
+}

@@ -1,0 +1,17 @@
+.album-title {
+  margin: 6vh auto;
+  width: 100%;
+  font-size: 18px;
+  letter-spacing: 3px;
+  text-align: center;
+  color: #666666 !important;
+  font-family: "Adobe Garamond Pro", Times New Roman, serif;
+}
+
+.album-description {
+	font-family: "Adobe Garamond Pro", Times New Roman, serif;
+	font-size: 14px;
+  letter-spacing: 1px;
+  color: #666666 !important;
+	margin: -6vh auto;
+}

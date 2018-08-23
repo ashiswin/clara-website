@@ -13,7 +13,7 @@
 		$targetFile = $targetDir . $filename;
 		if(!move_uploaded_file($_FILES["bannerImages"]["tmp_name"][$i], $targetFile)) {
 			$response["success"] = false;
-			$response["message"] = "Failed to upload!";
+			$response["message"] = $_FILES["bannerImages"]["error"];
 	
 			echo(json_encode($response));
 			return;
