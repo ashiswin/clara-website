@@ -132,7 +132,7 @@ function loadAlbums() {
 			for(var i = 0; i < response.albums.length; i++) {
 				html += "<tr>\n";
 				html += "\t<td>" + (i + 1) + "</td>\n";
-				html += "\t<td><img src=\"" + response.albums[i].cover + "\" width=\"100%\"></td>\n";
+				html += "\t<td><img src=\"../" + response.albums[i].cover + "\" width=\"100%\"></td>\n";
 				html += "\t<td>" + response.albums[i].name + "</td>\n";
 				html += "\t<td>" + text_truncate(response.albums[i].description) + "</td>\n";
 				html += "\t<td>" + response.albums[i].categoryName + "</td>\n";

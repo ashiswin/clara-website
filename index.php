@@ -28,10 +28,7 @@
 			<span class="subtitle"><?php echo file('config/bannerSubtitle.txt')[0]; ?></span>
 		</div>
 		<nav class="navbar navbar-expand-sm navbar-light bg-clear flex-nowrap" style="margin-top: 2vh">
-			<button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbar5">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="navbar-collapse collapse w-100 justify-content-center">
+			<div class="justify-content-center" style="margin: auto;">
 				<ul class="navbar-nav mx-auto">
 					<li class="nav-item">
 						<a class="nav-link text-white" href="#">HOME</a>
@@ -89,11 +86,8 @@
 			<div class="col-md-6" style="border-right: dotted; border-width: 0.5px; border-color: #CCCCCC">
 				<h3>HELLO THERE!</h3>
 				<hr>
-				<p>
-					We are a collective of passionate imagemakers who believe in honest images documented in the essence of natural light and two people being in love.
-				</p>
-				<p>
-					We are in this to tell your story.
+				<p style="margin-top: 8vh;">
+					“The best thing about a picture is that it never changes, even when the people in it do.”
 				</p>
 			</div>
 			<div class="col-md-6" style="height: 100%;">
@@ -102,7 +96,7 @@
 				<p style="margin-top: 10vh;">
 					<a href="facebook.com" class="social-link"><i class="fab fa-facebook-f"></i></a>
 					<a href="https://www.instagram.com/hpyclara/" class="social-link"><i class="fab fa-instagram"></i></a>
-					<a href="pintrest.com" class="social-link"><i class="fab fa-pinterest-p"></i></a>
+					<a href="https://sg.carousell.com/clarahohohoho/" class="social-link""><img src="img/carousell.png" style="width: 2vh; margin-top: -0.5vh;"></a>
 				</p>
 			</div>
 		</div>
